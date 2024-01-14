@@ -1,5 +1,5 @@
-import { log } from "console";
 import inquirer from "inquirer";
+import chalk from "chalk";
 
 type userInfo = {
   userName: string;
@@ -9,18 +9,24 @@ type userInfo = {
   amount: number;
 };
 
+console.log(
+  chalk.greenBright(
+    "<--------------------------Welcome to Bank ATM-------------------------->"
+  )
+);
+
 const answers: userInfo = await inquirer.prompt([
   // Taking client id as input
   {
     type: "input",
     name: "userName",
-    message: "Enter your username please: ",
+    message: chalk.cyanBright("Enter your username please: "),
   },
   // Taking client 4 digit password if username is correct
   {
     type: "number",
     name: "userPin",
-    message: "Enter your secret 4 digit PIN: ",
+    message: chalk.cyanBright("Enter your secret 4 digit PIN: "),
     when(answers) {
       return answers.userName == "client";
     },
@@ -29,7 +35,7 @@ const answers: userInfo = await inquirer.prompt([
   {
     type: "list",
     name: "accountType",
-    message: "Selec your account type: ",
+    message: chalk.magentaBright("Select your account type: "),
     choices: ["Saving", "Current"],
     when(answers) {
       return answers.userPin == 9731;
@@ -39,7 +45,7 @@ const answers: userInfo = await inquirer.prompt([
   {
     type: "list",
     name: "transactionType",
-    message: "Select transaction type: ",
+    message: chalk.magentaBright("Select transaction type: "),
     choices: ["Fast Cash", "Withdraw", "Balance Inquiry"],
     when(answers) {
       return answers.accountType;
@@ -49,7 +55,7 @@ const answers: userInfo = await inquirer.prompt([
   {
     type: "list",
     name: "amount",
-    message: "Select the amount you want to withdraw: ",
+    message: chalk.magentaBright("Select the amount you want to withdraw: "),
     choices: [1000, 3000, 5000, 10000, 15000, 20000],
     when(answers) {
       return answers.transactionType == "Fast Cash";
@@ -59,7 +65,7 @@ const answers: userInfo = await inquirer.prompt([
   {
     type: "number",
     name: "amount",
-    message: "Enter the amount you want to withdraw: ",
+    message: chalk.cyanBright("Enter the amount you want to withdraw: "),
     when(answers) {
       return answers.transactionType == "Withdraw";
     },
@@ -82,16 +88,18 @@ if (answers.userName == "client" && answers.userPin == 9731) {
   } else if (answers.transactionType != "Balance Inquiry") {
     if (enteredAmount <= balance) {
       console.log(
-        `You have succesfully withdrawn ${enteredAmount} from your account. The remaining balance is: ${remainigBalance}`
+        chalk.blueBright(
+          `You have succesfully withdrawn ${enteredAmount} from your account. The remaining balance is: ${remainigBalance}`
+        )
       );
       // Throwing error if entered amount is greater then account balance
     } else {
-      console.log(`Insufficient Balance: ${balance}`);
+      console.log(chalk.redBright(`Insufficient Balance: ${balance}`));
     }
   }
 }
 
 // Throwing error if username or 4 digit pin is incorrect
 else {
-  console.log("Wrong username or Pin");
+  console.log(chalk.redBright("Wrong username or Pin"));
 }
