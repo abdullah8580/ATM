@@ -1,3 +1,7 @@
+#! /usr/bin/env node
+
+// username is client and password is 9731
+
 import inquirer from "inquirer";
 import chalk from "chalk";
 
@@ -79,7 +83,7 @@ const answers: userInfo = await inquirer.prompt([
 if (answers.userName == "client" && answers.userPin == 9731) {
   // Generating random account balance with Math.random function
 
-  let balance = Math.floor(Math.random() * 10000000);
+  let balance = Math.floor(Math.random() * 1000000);
   let enteredAmount = answers.amount;
   // Setting remaining balance after transaction
   let remainigBalance = balance - enteredAmount;
